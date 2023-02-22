@@ -2,18 +2,16 @@ import React, { useState } from "react";
 import { View, TextInput, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setCountryCode, setNumber } from "../../reducer";
+import { countryCodes } from "./config";
 import DropDownPicker from "react-native-dropdown-picker";
 import styles from "./styles";
 
 const PhoneInput = () => {
-  const { countryCode, number } = useSelector(state => state.signup);
+  const { number } = useSelector(state => state.signup);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("+1");
-  const [items, setItems] = useState([
-    {label: "+1", value: "+1"},
-    {label: "+380", value: "+380"}
-  ]);
+  const [items, setItems] = useState(countryCodes);
 
   return (
     <View style={styles.mainContainer}>

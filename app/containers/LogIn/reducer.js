@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    email: "",
+    emailLogin: "",
     password: "",
     paddingTopView: 50,
     paddingTopHeaderText: 90,
@@ -12,10 +12,10 @@ export const loginSlice = createSlice({
     name: "login",
     initialState,
     reducers: {
-        setEmail: (state, action) => {
-            state.email = action.payload;
+        setLoginEmail: (state, action) => {
+            state.emailLogin = action.payload;
         },
-        setPassword: (state, action) => {
+        setLoginPassword: (state, action) => {
             state.password = action.payload;
         },
         setPaddingTopView: (state, action) => {
@@ -27,15 +27,20 @@ export const loginSlice = createSlice({
         setPaddingBottomHeaderText: (state, action) => {
             state.paddingBottomHeaderText = action.payload;
         },
+        setLoginDefault: state => {
+            state.emailLogin = initialState.emailLogin;
+            state.password = initialState.password;
+        }
     },
 });
 
 export const { 
-    setEmail,
-    setPassword,
+    setLoginEmail,
+    setLoginPassword,
     setPaddingTopView,
     setPaddingTopHeaderText,
-    setPaddingBottomHeaderText
+    setPaddingBottomHeaderText,
+    setLoginDefault
 } = loginSlice.actions;
 
 export default loginSlice.reducer;

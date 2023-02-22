@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { setImage } from "../../reducer";
+import { makeUserObjectFromObject, makeUserObjectFromValues } from "../../../../helpers/generateUserObject";
+import { setImage, setDefault } from "../../reducer";
+import { setLoginDefault } from "../../../LogIn/reducer";
+import db from "../../../../utils/database";
 import * as ImagePicker from "expo-image-picker";
 import CTButton from "../../../../components/CTButton";
 import EditImage from "../../../../icons/EditImage";
 import DefaultProfileImage from "../../../../icons/DefaultProfileImage";
 import styles from "./styles";
 
-const Header = () => {
-  const { image } = useSelector(state => state.profile);
+const Header = ({ navigation }) => {
+  const { image, name, position, email, skype, phone } = useSelector(state => state.profile);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,7 +40,39 @@ const Header = () => {
   };
 
   const logOutHandler = () => {
-    console.warn("LogOut Button Pressed!");
+    try {
+      db.transaction((tx) => {
+        tx.executeSql("SELECT * FROM users WHERE email = ?;",
+          [email],
+          (tx, results) => {
+            const object = makeUserObjectFromObject(results.rows._array[0]);
+            const stateObj = makeUserObjectFromValues(image, name, email, phone, position, skype);
+            if(JSON.stringify(object) !== JSON.stringify(stateObj)) {
+              Alert.alert("Exit confirmation", "If you will log out, changed data will not be saved", [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    dispatch(setLoginDefault());
+                    navigation.navigate("login");
+                  }
+                },
+                {
+                  text: "Cancel",
+                  onPress: () => {}
+                }
+              ]);
+            } else {
+              dispatch(setDefault());
+              dispatch(setLoginDefault());
+              navigation.navigate("login");
+            }
+          },
+          (tx, error) => console.log("SELECT Error => ", error)
+        );
+      });
+    } catch(error) {
+      console.log(error);
+    };
   };
 
   return (
@@ -55,8 +90,8 @@ const Header = () => {
           <DefaultProfileImage height={70} width={70} />}
         <EditImage height={24} width={24} style={styles.changeImageIcon}/>
       </TouchableOpacity>
-      <Text style={styles.nameText}>Mike Tyson</Text>
-      <Text style={styles.positionText}>UI/UX Designer</Text>
+      <Text style={styles.nameText}>{name ? name : "Input your name..."}</Text>
+      <Text style={styles.positionText}>{position ? position : "Input your position..."}</Text>
     </View>
   );
 };

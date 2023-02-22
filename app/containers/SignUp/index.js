@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { ScrollView, BackHandler, View, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { validateEmail } from "../../helpers/validation";
+import { setLoginEmail } from "../LogIn/reducer";
+import { setDefault } from "./reducer";
+import db from "../../utils/database";
 import Header from "../../components/Header";
 import PhoneInput from "./components/PhoneInput";
 import CodeInput from "./components/CodeInput";
@@ -13,6 +16,7 @@ import styles from "./styles";
 
 const SignUp = ({ navigation }) => {
   const { name, email, password, confirmPassword, countryCode, number } = useSelector(state => state.signup);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", () => true);
@@ -27,6 +31,16 @@ const SignUp = ({ navigation }) => {
       return;
     }
     if(validateEmail(email) && password === confirmPassword) {
+      db.transaction(tx => {
+        tx.executeSql(`INSERT INTO users 
+          (name, email, phone, password)
+          VALUES (?,?,?,?)`,
+        [name, email, countryCode + number, password],
+        (tx, result) => {},
+        (tx, error) => console.log("INSERT Error => ", error));
+      });
+      dispatch(setLoginEmail(email));
+      dispatch(setDefault());
       navigation.navigate("profile");
     } else if(!validateEmail(email) && password !== confirmPassword) {
       Alert.alert("Validation Error!", "Email or password is not correct!");

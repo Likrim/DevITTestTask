@@ -1,15 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextInput, View, Text, TouchableOpacity } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
-import { setIsHide } from "./reducer";
 import PropTypes from "prop-types";
 import EyeOpen from "../../icons/EyeOpen";
 import EyeClose from "../../icons/EyeClose";
 import styles from "./styles";
 
 const CTTextInput = ({ title, isHaveHide, placeholder, keyboardType, value, setValue }) => {
-  const isHide = useSelector(state => state.textInput.isHide);
-  const dispatch = useDispatch();
+  const [isHide, setIsHide] = useState(true);
 
   return (
     <View style={styles.mainContainer}>
@@ -24,7 +21,7 @@ const CTTextInput = ({ title, isHaveHide, placeholder, keyboardType, value, setV
         />
         {isHaveHide &&
         <TouchableOpacity style={styles.icon}
-          onPress={() => dispatch(setIsHide())}>
+          onPress={() => setIsHide(!isHide)}>
           {!isHide ? 
             <EyeClose width={18}/> :
             <EyeOpen width={18}/>}

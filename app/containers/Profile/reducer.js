@@ -30,6 +30,22 @@ export const profileSlice = createSlice({
         },
         setSkype: (state, action) => {
             state.skype = action.payload;
+        },
+        setUser: (state, action) => {
+            state.email = action.payload.email;
+            state.image = action.payload.image;
+            state.name = action.payload.name;
+            state.phone = action.payload.phone;
+            state.position = action.payload.position;
+            state.skype = action.payload.skype;
+        },
+        setDefault: state => {
+            state.email = initialState.email;
+            state.image = initialState.image;
+            state.name = initialState.name;
+            state.phone = initialState.phone;
+            state.position = initialState.position;
+            state.skype = initialState.skype;
         }
     },
 });
@@ -40,7 +56,9 @@ export const {
     setEmail,
     setPhone,
     setPosition,
-    setSkype
+    setSkype,
+    setUser,
+    setDefault
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

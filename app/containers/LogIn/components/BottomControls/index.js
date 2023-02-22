@@ -1,22 +1,44 @@
 import React from "react";
 import { View, Text, Alert } from "react-native";
-import { useSelector } from "react-redux";
-import { validateEmail } from "../../../../helpers/validation";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoginDefault } from "../../reducer";
+import { validateEmail, validatePassword } from "../../../../helpers/validation";
+import db from "../../../../utils/database";
 import CTButton from "../../../../components/CTButton";
 import styles from "./styles";
 
 const BottomControls = ({ navigation }) => {
-  const { email, password } = useSelector((state) => state.login);
+  const { emailLogin, password } = useSelector((state) => state.login);
+  const dispatch = useDispatch();
 
   const loginHandle = () => {
-    if (email === "" || password === "") {
+    if (emailLogin === "" || password === "") {
       Alert.alert("Input Error!", "Email and password are required fields!");
       return;
-    }
-    if (validateEmail(email)){
-      navigation.navigate("profile");
-    } else {
-      Alert.alert("Validation Error", "Email is not correct!");
+    }  else if(!validateEmail(emailLogin)){
+      Alert.alert("E-mail Validation Error!", "Email is not correct!");
+    } else if(!validatePassword(password)) {
+      Alert.alert("Password Validation Error!", "Password must have length form 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter.");
+    } else if (validateEmail(emailLogin) && validatePassword(password)){
+      try {
+        db.transaction(tx => {
+          tx.executeSql("SELECT * FROM users WHERE email = ? AND password = ?;",
+            [emailLogin, password],
+            (tx, results) => {
+              if(results.rows.length !== 0) {
+                navigation.navigate("profile");
+              } else {
+                Alert.alert("Log In Error", "This user doesn`t exist!");
+                dispatch(setLoginDefault());
+              }
+            },
+            (tx, error) => {
+              console.log("Error INSERT => ", error);
+            });
+        });
+      } catch(error) {
+        console.log(error);
+      }
     }
   };
 

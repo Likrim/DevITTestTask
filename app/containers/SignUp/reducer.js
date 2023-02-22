@@ -30,6 +30,13 @@ export const signupSlice = createSlice({
         }),
         setNumber: ((state, action) => {
             state.number = action.payload;
+        }),
+        setDefault: (state => {
+            state.name = initialState.name;
+            state.email = initialState.email;
+            state.password = initialState.password;
+            state.confirmPassword = initialState.confirmPassword;
+            state.number = initialState.number;
         })
     },
 });
@@ -41,6 +48,7 @@ export const {
     setConfirmPassword,
     setCountryCode,
     setNumber,
+    setDefault,
 } = signupSlice.actions;
 
 export default signupSlice.reducer;
