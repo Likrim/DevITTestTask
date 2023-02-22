@@ -43,13 +43,6 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         fontWeight: "500",
         color: "#9795A4"
-    },
-    dropDownContainerStyle: {
-        borderColor: "#D7D7D7",
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
-        backgroundColor: "#fff",
-        maxHeight: 120
     }
 });
 
