@@ -48,7 +48,8 @@ const styles = StyleSheet.create({
         borderColor: "#D7D7D7",
         borderBottomRightRadius: 15,
         borderBottomLeftRadius: 15,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        maxHeight: 120
     }
 });
 

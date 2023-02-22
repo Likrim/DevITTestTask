@@ -27,8 +27,9 @@ const PhoneInput = () => {
           containerStyle={styles.dropContainer}
           style={styles.dropdown}
           textStyle={styles.dropDownText}
-          dropDownContainerStyle={styles.dropDownContainerStyle}
           onChangeValue={value => dispatch(setCountryCode(value))}
+          listMode="MODAL"
+          modalAnimationType="slide"
         />
         <TextInput style={styles.textInput}
           placeholder="phone"

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, BackHandler, View, Alert } from "react-native";
+import { ScrollView, BackHandler, View, Alert, Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSelector, useDispatch } from "react-redux";
 import { validateEmail } from "../../helpers/validation";
@@ -63,7 +63,7 @@ const SignUp = ({ navigation }) => {
           <MainInputs />
           <CTButton title={"Next"}
             onPress={signupHandle}
-            containerStyles={{marginTop: 40}}/>
+            containerStyles={{marginTop: 40, width: Dimensions.get("window").width - 60}}/>
           <GoToLogin navigation={navigation}/>
         </View>
       </ScrollView>
