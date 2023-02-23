@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput } from "react-native";
+import i18next from "../../../../utils/i18n";
 import styles from "./styles";
 
 const CodeInput = () => {
@@ -10,7 +11,7 @@ const CodeInput = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Text style={styles.titleText}>Code</Text>
+      <Text style={styles.titleText}>{i18next.t("codeInputTitle")}</Text>
       <View style={styles.inputsContainer}>
         <TextInput style={[styles.textInput, {borderColor: inputFocus1 ? "#FFC612" : "#d7d7d7"}]} 
           maxLength={1}

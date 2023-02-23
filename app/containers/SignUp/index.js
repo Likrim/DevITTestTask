@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { ScrollView, BackHandler, View, Alert, Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSelector, useDispatch } from "react-redux";
-import { validateEmail } from "../../helpers/validation";
+import { validateEmail, validatePassword } from "../../helpers/validation";
 import { setLoginEmail } from "../LogIn/reducer";
 import { setDefault } from "./reducer";
+import i18next from "../../utils/i18n";
 import db from "../../utils/database";
 import Header from "../../components/Header";
 import PhoneInput from "./components/PhoneInput";
@@ -27,10 +28,10 @@ const SignUp = ({ navigation }) => {
 
   const signupHandle = () => {
     if(email === "" || password === "" || confirmPassword === "") {
-      Alert.alert("Input Error!", "Email and password are required fields!");
+      Alert.alert(i18next.t("inputErrorTitle"), i18next.t("inputErrorMessage"));
       return;
     }
-    if(validateEmail(email) && password === confirmPassword) {
+    if(validateEmail(email) && password === confirmPassword && validatePassword(password)) {
       db.transaction(tx => {
         tx.executeSql(`INSERT INTO users 
           (name, email, phone, password)
@@ -43,11 +44,13 @@ const SignUp = ({ navigation }) => {
       dispatch(setDefault());
       navigation.navigate("profile");
     } else if(!validateEmail(email) && password !== confirmPassword) {
-      Alert.alert("Validation Error!", "Email or password is not correct!");
+      Alert.alert(i18next.t("validationErrorTitle"), i18next.t("validationErrorMessage"));
     } else if(!validateEmail(email)) {
-      Alert.alert("Validation Error!", "Email is not correct!");
+      Alert.alert(i18next.t("emailValidationErrorTitle"), i18next.t("emailValidationErrorMessage"));
+    } else if(!validatePassword(password)) {
+      Alert.alert(i18next.t("passwordValidationErrorTitle"), i18next.t("passwordValidationErrorMessage"));
     } else {
-      Alert.alert("Comparison Error!", "Passwords do not match!");
+      Alert.alert(i18next.t("comparisonErrorTitle"), i18next.t("comparisonErrorMessage"));
     }
   };
 
@@ -57,11 +60,11 @@ const SignUp = ({ navigation }) => {
       scrollEnabled={false}>
       <ScrollView bounces={false}>
         <View style={styles.mainContainer}>
-          <Header title={"Sign Up To Woorkroom"}/>
+          <Header title={i18next.t("signupHeader")}/>
           <PhoneInput />
           <CodeInput />
           <MainInputs />
-          <CTButton title={"Next"}
+          <CTButton title={i18next.t("signupButton")}
             onPress={signupHandle}
             containerStyles={{marginTop: 40, width: Dimensions.get("window").width - 60}}/>
           <GoToLogin navigation={navigation}/>

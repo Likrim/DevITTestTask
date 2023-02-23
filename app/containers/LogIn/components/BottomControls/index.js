@@ -3,6 +3,7 @@ import { View, Text, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoginDefault } from "../../reducer";
 import { validateEmail, validatePassword } from "../../../../helpers/validation";
+import i18next from "../../../../utils/i18n";
 import db from "../../../../utils/database";
 import CTButton from "../../../../components/CTButton";
 import styles from "./styles";
@@ -13,12 +14,12 @@ const BottomControls = ({ navigation }) => {
 
   const loginHandle = () => {
     if (emailLogin === "" || password === "") {
-      Alert.alert("Input Error!", "Email and password are required fields!");
+      Alert.alert(i18next.t("inputErrorTitle"), i18next.t("inputErrorMessage"));
       return;
     }  else if(!validateEmail(emailLogin)){
-      Alert.alert("E-mail Validation Error!", "Email is not correct!");
+      Alert.alert(i18next.t("emailValidationErrorTitle"), i18next.t("emailValidationErrorMessage"));
     } else if(!validatePassword(password)) {
-      Alert.alert("Password Validation Error!", "Password must have length form 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter.");
+      Alert.alert(i18next.t("passwordValidationErrorTitle"), i18next.t("passwordValidationErrorMessage"));
     } else if (validateEmail(emailLogin) && validatePassword(password)){
       try {
         db.transaction(tx => {
@@ -28,7 +29,7 @@ const BottomControls = ({ navigation }) => {
               if(results.rows.length !== 0) {
                 navigation.navigate("profile");
               } else {
-                Alert.alert("Log In Error", "This user doesn`t exist!");
+                Alert.alert(i18next.t("loginErrorTitle"), i18next.t("loginErrorMessage"));
                 dispatch(setLoginDefault());
               }
             },
@@ -44,10 +45,10 @@ const BottomControls = ({ navigation }) => {
 
   return (
     <View style={styles.bottomControlContainer}>
-      <CTButton title={"Log In"} containerStyles={{marginTop: 40}} onPress={loginHandle}/>
+      <CTButton title={i18next.t("loginButton")} containerStyles={{marginTop: 40}} onPress={loginHandle}/>
       <View style={styles.createAccountContainer}>
-        <Text style={styles.nonPressebleText}>New User? </Text>
-        <CTButton title={"Sign Up"}
+        <Text style={styles.nonPressebleText}>{i18next.t("newUser")}</Text>
+        <CTButton title={i18next.t("signUp")}
           containerStyles={styles.buttonContainer}
           titleStyles={styles.buttonText}
           onPress={() => navigation.navigate("signup")}/>

@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setName, setEmail, setPassword, setConfirmPassword } from "../../reducer";
+import i18next from "../../../../utils/i18n";
 import CTTextInput from "../../../../components/CTTextInput";
 import styles from "./styles";
 
@@ -11,24 +12,24 @@ const MainInputs = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <CTTextInput placeholder={"Your name"}
-        title="Your Name"
+      <CTTextInput placeholder={i18next.t("nameInputPlaceholder")}
+        title={i18next.t("nameInputTitle")}
         keyboardType="default"
         value={name}
         setValue={(text) => dispatch(setName(text))}/>
-      <CTTextInput placeholder={"E-mail"}
-        title="Your Email"
+      <CTTextInput placeholder={i18next.t("emailInputPlaceholder")}
+        title={i18next.t("emailInputTitle")}
         keyboardType="email-address"
         value={email}
         setValue={(text) => dispatch(setEmail(text))}/>
-      <CTTextInput placeholder={"Password"}
-        title="Password"
+      <CTTextInput placeholder={i18next.t("passwordInputTitle")}
+        title={i18next.t("passwordInputTitle")}
         keyboardType="default"
         isHaveHide
         value={password}
         setValue={(text) => dispatch(setPassword(text))}/>
-      <CTTextInput placeholder={"Confirm password"}
-        title="Confirm Password"
+      <CTTextInput placeholder={i18next.t("confirmInputPlaceholder")}
+        title={i18next.t("confirmInputTitle")}
         keyboardType="default"
         isHaveHide
         value={confirmPassword}

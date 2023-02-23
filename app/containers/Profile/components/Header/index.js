@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { makeUserObjectFromObject, makeUserObjectFromValues } from "../../../../helpers/generateUserObject";
 import { setImage, setDefault } from "../../reducer";
 import { setLoginDefault } from "../../../LogIn/reducer";
+import i18next from "../../../../utils/i18n";
 import db from "../../../../utils/database";
 import * as ImagePicker from "expo-image-picker";
 import CTButton from "../../../../components/CTButton";
@@ -19,7 +20,7 @@ const Header = ({ navigation }) => {
     const getPermission = async () => {
       const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if(galleryPermission.status !== "granted")
-        Alert.alert("Permission Denied!", "Photo change is not avaliable because permission is denied!!!");
+        Alert.alert(i18next.t("permissionDeniedTitle"), i18next.t("permissionDeniedMessage"));
     };
 
     getPermission();
@@ -48,7 +49,7 @@ const Header = ({ navigation }) => {
             const object = makeUserObjectFromObject(results.rows._array[0]);
             const stateObj = makeUserObjectFromValues(image, name, email, phone, position, skype);
             if(JSON.stringify(object) !== JSON.stringify(stateObj)) {
-              Alert.alert("Exit confirmation", "If you will log out, changed data will not be saved", [
+              Alert.alert(i18next.t("exitConfirmationTitle"), i18next.t("exitConfirmationMessage"), [
                 {
                   text: "OK",
                   onPress: () => {
@@ -78,8 +79,8 @@ const Header = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerControlsContainer}>
-        <Text style={styles.headerControlsText}>Edit Profile</Text>
-        <CTButton title={"Log Out"}
+        <Text style={styles.headerControlsText}>{i18next.t("profileHeader")}</Text>
+        <CTButton title={i18next.t("logout")}
           containerStyles={styles.headerControlsButtonContainer}
           titleStyles={styles.headerControlsButtonText}
           onPress={logOutHandler}

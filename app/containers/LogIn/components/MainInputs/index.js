@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoginEmail, setLoginPassword } from "../../reducer";
+import i18next from "../../../../utils/i18n";
 import CTTextInput from "../../../../components/CTTextInput";
 import styles from "./styles";
 
@@ -11,21 +12,21 @@ const MainInputs = () => {
 
   return (
     <View style={styles.textInputContainer}>
-      <CTTextInput title="Your Email"
+      <CTTextInput title={i18next.t("emailInputTitle")}
         isHaveHide={false}
-        placeholder="E-mail"
+        placeholder={i18next.t("emailInputPlaceholder")}
         keyboardType="email-address"
         value={emailLogin}
         setValue={(text) => dispatch(setLoginEmail(text))}/>
-      <CTTextInput title="Password"
+      <CTTextInput title={i18next.t("passwordInputTitle")}
         isHaveHide={true}
-        placeholder="Password"
+        placeholder={i18next.t("passwordInputTitle")}
         keyboardType="default"
         value={password}
         setValue={(text) => dispatch(setLoginPassword(text))}/>
       <TouchableOpacity style={styles.forgotPasswordButton}
         onPress={() => console.warn("On Press ForgotPassword Button")}>
-        <Text style={styles.forgotPasswordButtonText}>Forgot password?</Text>
+        <Text style={styles.forgotPasswordButtonText}>{i18next.t("forgotPassword")}</Text>
       </TouchableOpacity>
     </View>
   )

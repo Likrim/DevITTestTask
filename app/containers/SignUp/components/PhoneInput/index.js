@@ -3,6 +3,7 @@ import { View, TextInput, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setCountryCode, setNumber } from "../../reducer";
 import { countryCodes } from "./config";
+import i18next from "../../../../utils/i18n";
 import DropDownPicker from "react-native-dropdown-picker";
 import styles from "./styles";
 
@@ -15,7 +16,7 @@ const PhoneInput = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Text style={styles.titleText}>Phone Number</Text>
+      <Text style={styles.titleText}>{i18next.t("phoneInputTitle")}</Text>
       <View style={styles.inputsContainer}>
         <DropDownPicker 
           open={open}
@@ -32,7 +33,7 @@ const PhoneInput = () => {
           modalAnimationType="slide"
         />
         <TextInput style={styles.textInput}
-          placeholder="phone"
+          placeholder={i18next.t("phoneInputPlaceholder")}
           keyboardType="number-pad"
           value={number}
           onChangeText={(text) => dispatch(setNumber(text))}

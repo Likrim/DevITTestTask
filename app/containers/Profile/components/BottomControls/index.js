@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setLoginDefault } from "../../../LogIn/reducer";
 import { setEmail } from "../../reducer";
 import { validateEmail } from "../../../../helpers/validation";
+import i18next from "../../../../utils/i18n";
 import db from "../../../../utils/database";
 import CTButton from "../../../../components/CTButton";
 import styles from "./styles";
@@ -23,7 +24,7 @@ const BottomControls = ({ navigation }) => {
           [image, name, email, phone, position, skype, emailLogin],
           (tx, results) => {
             if(results.rowsAffected !== 0) {
-              Alert.alert("Data Saved", "Your data saved successfully!", [
+              Alert.alert(i18next.t("dataSavedTitle"), i18next.t("dataSavedMessage"), [
                 {text: "Log Out", onPress: () => {
                   dispatch(setLoginDefault());
                   navigation.navigate("login");
@@ -34,12 +35,12 @@ const BottomControls = ({ navigation }) => {
           },
           (tx, error) => {
             if(error.message.includes("UNIQUE constraint failed")) {
-              Alert.alert("Email Error", "The email you typed already exists", [
+              Alert.alert(i18next.t("emailErrorTitle"), i18next.t("emailErrorMessage"), [
                 {text: "Ok", onPress: () => dispatch(setEmail(emailLogin))}
               ]);
             }
           });
-      }) : Alert.alert("E-mail Validation Error!", "Email is not correct!", [
+      }) : Alert.alert(i18next.t("emailValidationErrorTitle"), i18next.t("emailValidationErrorMessage"), [
         {text: "Ok", onPress: () => dispatch(setEmail(emailLogin))}
       ]);
     } catch (error) {
@@ -49,7 +50,7 @@ const BottomControls = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <CTButton title={"Save"} onPress={saveHandle} containerStyles={{marginTop: 30}}/>
+      <CTButton title={i18next.t("saveButton")} onPress={saveHandle} containerStyles={{marginTop: 30}}/>
     </View>
   );
 };

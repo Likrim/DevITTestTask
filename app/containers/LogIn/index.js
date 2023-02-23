@@ -3,6 +3,7 @@ import { Keyboard, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setPaddingTopView, setPaddingTopHeaderText, setPaddingBottomHeaderText } from "./reducer";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import i18next from "../../utils/i18n";
 import Header from "../../components/Header";
 import MainInputs from "./components/MainInputs";
 import BottomControls from "./components/BottomControls";
@@ -43,7 +44,7 @@ const LogIn = ({ navigation }) => {
       resetScrollToCoords={{x: 0, y: 0}}
       contentContainerStyle={[styles.mainContainer, {paddingTop: paddingTopView}]}
       scrollEnabled={false}>
-      <Header title={"Log In To Woorkroom"}/>
+      <Header title={i18next.t("loginHeader")}/>
       <MainInputs />
       <BottomControls navigation={navigation} />
     </KeyboardAwareScrollView>
