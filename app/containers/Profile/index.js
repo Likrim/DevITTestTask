@@ -24,7 +24,7 @@ const Profile = ({ navigation }) => {
             const object = makeUserObjectFromObject(results.rows._array[0]);
             dispatch(setUser(object));
           },
-          (tx, error) => {"SELECT Profile Error => ", error});
+          (tx, error) => {console.log("SELECT Profile Error => ", error);});
       });
     } catch (error) {
       console.log("Profile Read Error => ", error);

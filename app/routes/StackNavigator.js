@@ -8,10 +8,13 @@ const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="login" screenOptions={{headerShown: false, gestureEnabled: false}}>
-      <Stack.Screen name="login" component={LogIn}/>
-      <Stack.Screen name="signup" component={SignUp}/>
-      <Stack.Screen name="profile" component={Profile}/>
+    <Stack.Navigator
+      initialRouteName="login"
+      screenOptions={{ headerShown: false, gestureEnabled: false }}
+    >
+      <Stack.Screen name="login" component={LogIn} />
+      <Stack.Screen name="signup" component={SignUp} />
+      <Stack.Screen name="profile" component={Profile} />
     </Stack.Navigator>
   );
 };
